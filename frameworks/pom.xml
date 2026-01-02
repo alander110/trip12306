@@ -12,16 +12,16 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>base</module>-->
-<!--        <module>bizs</module>-->
-<!--        <module>cache</module>-->
-<!--        <module>common</module>-->
-<!--        <module>convention</module>-->
-<!--        <module>database</module>-->
-<!--        <module>designpattern</module>-->
-<!--        <module>distributedid</module>-->
-<!--        <module>idempotent</module>-->
-<!--        <module>log</module>-->
-<!--        <module>web</module>-->
+        <module>base</module>
+        <module>bizs</module>
+        <module>cache</module>
+        <module>common</module>
+        <module>convention</module>
+        <module>database</module>
+        <module>designpattern</module>
+        <module>distributedid</module>
+        <module>idempotent</module>
+        <module>log</module>
+        <module>web</module>
     </modules>
 </project>
