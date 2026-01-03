@@ -19,6 +19,7 @@ import com.alander.trip12306.userservice.dto.resp.UserQueryRespDTO;
 import com.alander.trip12306.userservice.dto.resp.UserRegisterRespDTO;
 import com.alander.trip12306.userservice.service.UserLoginService;
 import com.alander.trip12306.userservice.service.UserService;
+import com.alander.trip12306.userservice.toolkit.PasswordUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -89,10 +90,12 @@ public class UserLoginServiceImpl implements UserLoginService {
         // 根据用户名和密码查询用户信息
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
                 .eq(UserDO::getUsername, username)
-                .eq(UserDO::getPassword, requestParam.getPassword())
                 .select(UserDO::getId, UserDO::getUsername, UserDO::getRealName);
         UserDO userDO = userMapper.selectOne(queryWrapper);
         if (userDO != null) {
+            if (!PasswordUtil.matches(requestParam.getPassword(), userDO.getPassword())) {
+                throw new ClientException("输入密码错误");
+            }
             // 构建用户信息并生成访问令牌
             UserInfoDTO userInfo = UserInfoDTO.builder()
                     .userId(userDO.getId().toString())
@@ -136,6 +139,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
         try {
             try {
+                requestParam.setPassword(PasswordUtil.encodePassword(requestParam.getPassword()));
                 int insert = userMapper.insert(BeanUtil.convert(requestParam, UserDO.class));
                 if (insert < 1) {
                     throw new ServiceException(USER_REGISTER_FAIL);
