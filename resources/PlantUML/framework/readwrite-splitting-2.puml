@@ -1,0 +1,51 @@
+@startuml
+!define DATABASE entity
+left to right direction
+
+' 主数据库
+DATABASE MasterDB {
+  + DS_0 (主数据库)
+  - 处理写操作 (INSERT, UPDATE, DELETE)
+}
+
+  DATABASE SlaveDB1 {
+    + DS_1 (从库)
+    - 处理读操作 (SELECT)
+  }
+
+  DATABASE SlaveDB2 {
+    + DS_2 (从库)
+    - 处理读操作 (SELECT)
+  }
+
+  DATABASE SlaveDB3 {
+    + DS_2 (从库)
+    - 处理读操作 (SELECT)
+  }
+
+' ShardingSphere 读写分离
+class ShardingSphere {
+  + 负载均衡策略
+  + 读请求路由到从库
+  + 写请求路由到主库
+}
+
+' 负载均衡器
+class LoadBalancer {
+  + 随机负载均衡
+  + 轮询负载均衡
+  + 可自定义复杂均衡
+}
+
+' 数据流
+MasterDB -down-> SlaveDB1 : 数据同步
+MasterDB -down-> SlaveDB2 : 数据同步
+MasterDB -down-> SlaveDB3 : 数据同步
+
+ShardingSphere -down-> MasterDB : 写请求
+ShardingSphere -down-> LoadBalancer : 读请求分发
+LoadBalancer -down-> SlaveDB1 : 读请求
+LoadBalancer -down-> SlaveDB2 : 读请求
+LoadBalancer -down-> SlaveDB3 : 读请求
+
+@enduml

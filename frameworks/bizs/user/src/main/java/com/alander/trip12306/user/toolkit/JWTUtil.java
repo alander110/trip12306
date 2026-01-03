@@ -28,7 +28,7 @@ public class JWTUtil {
      * @param userInfo 用户信息
      * @return 用户访问 Token
      */
-    public String generateAccessToken(UserInfoDTO userInfo) {
+    public static String generateAccessToken(UserInfoDTO userInfo) {
         HashMap<Object, Object> customerUserMap = new HashMap<>();
         customerUserMap.put(USER_ID_KEY, userInfo.getUserId());
         customerUserMap.put(USER_NAME_KEY, userInfo.getUsername());

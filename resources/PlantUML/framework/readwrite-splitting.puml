@@ -1,0 +1,30 @@
+@startuml
+!define RECTANGLE class
+
+' 主数据库
+class MasterDB {
+  + DS_0 (主数据库)
+  - 数据同步到从库
+}
+
+' 从数据库
+class SlaveDB {
+  + DS_1 (从库)
+  + DS_2 (从库)
+  + DS_3 (从库)
+  - 接收主库数据同步
+}
+
+' ShardingSphere 读写分离
+class ShardingSphere {
+  + 读请求路由到从库
+  + 写请求路由到主库
+  + 负载均衡策略
+}
+
+' 数据流
+MasterDB -down-> SlaveDB : 数据同步
+ShardingSphere -down-> SlaveDB : 读请求
+ShardingSphere -down-> MasterDB : 写请求
+
+@enduml
