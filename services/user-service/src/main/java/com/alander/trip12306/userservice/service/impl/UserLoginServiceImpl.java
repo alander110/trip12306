@@ -87,10 +87,10 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
         // 邮箱和手机号都获取不到，则使用用户名
         username = Optional.ofNullable(username).orElse(usernameOrMailOrPhone);
-        // 根据用户名和密码查询用户信息
+        // 根据用户名查询用户信息
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
                 .eq(UserDO::getUsername, username)
-                .select(UserDO::getId, UserDO::getUsername, UserDO::getRealName);
+                .select(UserDO::getId, UserDO::getUsername, UserDO::getRealName, UserDO::getPassword);
         UserDO userDO = userMapper.selectOne(queryWrapper);
         if (userDO != null) {
             if (!PasswordUtil.matches(requestParam.getPassword(), userDO.getPassword())) {
