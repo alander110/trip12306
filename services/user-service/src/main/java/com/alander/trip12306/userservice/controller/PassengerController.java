@@ -62,7 +62,7 @@ public class PassengerController {
      * 修改乘车人
      */
     @Idempotent(
-            uniqueKeyPrefix = "index12306-user:lock_passenger-alter:",
+            uniqueKeyPrefix = "trip12306-user:lock_passenger-alter:",
             key = "T(com.alander.trip12306.user.core.UserContext).getUsername()",
             type = IdempotentTypeEnum.SPEL,
             scene = IdempotentSceneEnum.RESTAPI,
